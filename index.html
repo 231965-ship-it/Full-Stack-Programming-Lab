@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task 1: 5-Question Dynamic Quiz</title>
+</head>
+<body>
+    <h1>General Knowledge Quiz (5 Questions)</h1>
+
+    <div id="quiz-box">
+        <p>1. What is the capital of Pakistan?</p>
+        <input type="text" id="q1">
+
+        <p>2. What is 5 + 5?</p>
+        <input type="number" id="q2">
+
+        <p>3. Is JavaScript a programming language? (Yes/No)</p>
+        <input type="text" id="q3">
+
+        <p>4. Which planet is known as the Red Planet?</p>
+        <input type="text" id="q4">
+
+        <p>5. What is the boiling point of water (in Celsius)?</p>
+        <input type="number" id="q5">
+    </div>
+
+    <br>
+    <button onclick="checkQuiz()">Submit Quiz</button>
+    <button onclick="resetQuiz()">Reset Quiz</button>
+
+    <h2 id="scoreDisplay"></h2>
+    <p id="feedbackMessage"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>
