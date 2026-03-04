@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Lab Tasks (5, 6 & 7)</title>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+    <div class="container">
+        <h2>Task 5: Style Editor (Chaining)</h2>
+        <p id="textBlock">Is text ka style change karke dekhein!</p>
+        
+        <button id="btnStyle">Apply Chained Styles</button>
+        <button id="btnToggle">Toggle Bold/Italic</button>
+        <button id="btnReset" class="reset-btn">Reset</button>
+    </div>
+
+    <div class="container">
+        <h2>Task 6: API Data Fetcher</h2>
+        <ul id="postList"></ul>
+        <button id="loadMore">Load More Posts</button>
+    </div>
+
+    <div class="container">
+        <h2>Task 7: Form Validator</h2>
+        <form id="regForm">
+            <input type="text" id="username" placeholder="Username (Min 4 chars)">
+            <input type="email" id="userEmail" placeholder="Email Address">
+            <span id="emailError" class="error-msg">Invalid Email Format!</span>
+            <p id="successMsg" style="color: green; font-weight: bold;"></p>
+            <button id="submitBtn" disabled>Submit Now</button>
+        </form>
+    </div>
+
+    <script>
+    $(document).ready(function(){
+        
+        // --- TASK 5 LOGIC (Chaining) ---
+        $("#btnStyle").click(function(){
+            $("#textBlock")
+                .css("color", "white")
+                .css("background-color", "#333")
+                .css("font-size", "22px")
+                .hide(200)
+                .show(400);
+        });
+
+        $("#btnToggle").click(function(){
+            $("#textBlock").toggleClass("fancy-text");
+        });
+
+        $("#btnReset").click(function(){
+            $("#textBlock").attr("style", "").removeClass("fancy-text");
+        });
+
+
+        // --- TASK 6 LOGIC (API Fetcher) ---
+        let limit = 2;
+        function fetchPosts() {
+            $.ajax({
+                url: `https://jsonplaceholder.typicode.com/posts?_limit=${limit}`,
+                method: 'GET',
+                success: function(data) {
+                    $("#postList").empty();
+                    data.forEach(post => {
+                        $("#postList").append(`
+                            <li class="post-item">
+                                <strong>${post.title}</strong>
+                                <p>${post.body.substring(0, 60)}...</p>
+                            </li>
+                        `);
+                    });
+                }
+            });
+        }
+        fetchPosts(); // Initial load
+        $("#loadMore").click(function(){ limit += 2; fetchPosts(); });
+
+
+        // --- TASK 7 LOGIC (Validation) ---
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        $("#username, #userEmail").on("keyup change", function(){
+            let user = $("#username").val();
+            let email = $("#userEmail").val();
+
+            // Email check
+            if(email.length > 0 && !isValidEmail(email)) { $("#emailError").show(); } 
+            else { $("#emailError").hide(); }
+
+            // Enable/Disable Button
+            if(user.length >= 4 && isValidEmail(email)) {
+                $("#submitBtn").prop("disabled", false).css("background", "#28a745");
+            } else {
+                $("#submitBtn").prop("disabled", true).css("background", "#ccc");
+            }
+        });
+
+        $("#regForm").submit(function(e){
+            e.preventDefault();
+            $("#successMsg").text("Form Submitted Successfully!").fadeOut(3000);
+            this.reset();
+            $("#submitBtn").prop("disabled", true).css("background", "#ccc");
+        });
+
+    });
+    </script>
+
+</body>
+</html>

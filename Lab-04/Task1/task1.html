@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic List Manager</title>
+
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Dynamic List Manager</h2>
+
+    <div class="input-group">
+        <input type="text" id="itemInput" placeholder="Enter item">
+        <button id="addBtn">Add</button>
+    </div>
+
+    <ul id="itemList"></ul>
+
+</div>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- jQuery Script -->
+<script>
+$(document).ready(function(){
+
+    $("#addBtn").click(function(){
+        let item = $("#itemInput").val();
+        if(item !== ""){
+            $("#itemList").append(
+                "<li>" + item + 
+                "<button class='deleteBtn'>Delete</button></li>"
+            );
+            $("#itemInput").val("");
+        }
+    });
+
+    $(document).on("click", ".deleteBtn", function(){
+        $(this).parent().remove();
+    });
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery Lab Tasks</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="styyle.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Task 5: Chained Style Editor</h2>
+        <p id="textBlock">Ye text block edit hone ke liye tayyar hai!</p>
+        
+        <button id="btnStyle">Apply Multi-Styles (Chaining)</button>
+        <button id="btnToggle">Toggle Bold/Italic</button>
+        <button id="btnReset">Reset Text</button>
+    </div>
+
+    <div class="container">
+        <h2>Task 6: API Data Fetcher</h2>
+        <ul id="postList">
+            </ul>
+        <button id="loadMore">Load More Posts</button>
+    </div>
+
+    <script>
+    $(document).ready(function(){
+        
+        // --- Task 5: Chaining Logic ---
+        $("#btnStyle").click(function(){
+            // Chaining: Ek hi line mein multiple CSS changes
+            $("#textBlock")
+                .css("color", "white")
+                .css("background-color", "#333")
+                .css("font-size", "22px")
+                .css("border-radius", "10px")
+                .hide(200).show(500); // Animation bhi add kar di
+        });
+
+        $("#btnToggle").click(function(){
+            $("#textBlock").toggleClass("fancy-text");
+        });
+
+        $("#btnReset").click(function(){
+            $("#textBlock").attr("style", "").removeClass("fancy-text");
+        });
+
+
+        // --- Task 6: API Fetcher Logic ---
+        let postLimit = 2; // Shuru mein 2 posts
+
+        function fetchPosts() {
+            $.ajax({
+                url: "https://jsonplaceholder.typicode.com/posts",
+                method: "GET",
+                data: { _limit: postLimit },
+                success: function(response) {
+                    $("#postList").empty(); // Purani list saaf karein
+                    
+                    // Loop through data
+                    $.each(response, function(i, post) {
+                        $("#postList").append(`
+                            <li class="post-item">
+                                <strong>${post.title.toUpperCase()}</strong>
+                                <p>${post.body}</p>
+                            </li>
+                        `);
+                    });
+                },
+                error: function() {
+                    alert("Data load nahi ho saka!");
+                }
+            });
+        }
+
+        // Page load hote hi posts dikhao
+        fetchPosts();
+
+        // Load More button click par limit barhao
+        $("#loadMore").click(function(){
+            postLimit += 2; 
+            fetchPosts();
+        });
+
+    });
+    </script>
+
+</body>
+</html>
